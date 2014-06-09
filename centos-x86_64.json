@@ -25,6 +25,30 @@
 	  "guest_additions_sha256": "2b31a2b5327ed6babd510ff7edf7deb86c4286e6720357185049bbd1625ca934"
     },
     {
+      "type": "vmware-iso",  
+      "boot_command": [
+        "<esc>",
+        "<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.cfg<enter>"
+      ],
+      "boot_wait": "5s",
+      "disk_size": 40000,
+      "guest_os_type": "linux",
+      "headless": false,
+      "http_directory": "./http_directory",
+      "iso_checksum": "939fd1d87c11ffe7795324438b85adfb",
+      "iso_checksum_type": "md5",
+      "iso_urls": [
+        "http://mirror.cisp.com/CentOS/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso",
+        "http://mirror.ubiquityservers.com/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso",
+        "http://mirrors.arsc.edu/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso"
+      ],
+      "output_directory": "/tmp/packer",
+      "shutdown_command": "shutdown -P now",
+      "ssh_password": "vagrant",
+      "ssh_username": "root",
+	  "tools_upload_flavor": "linux"
+    },
+    {
       "ami_block_device_mappings": [
         {
           "delete_on_termination": true,
