@@ -123,7 +123,7 @@
     },
     {
       "script": "provisioners/prepare-udev.sh",
-      "type": "shell",
+      "type": "shell"
     },
     {
       "script": "provisioners/remove-extra-locales.sh",
