@@ -4,12 +4,14 @@
 require 'yaml'
 
 Vagrant.configure("2") do |config|
-	config.vm.box = "centos-6_5-64_percona"
+	config.vm.box = "centos-6_5-64_percona_aws"
 	#config.vm.box = "perconajayj/centos-x86_64"
 	config.ssh.username = "root"
+	config.vm.network "private_network", ip: "192.168.50.4"
+
 
 	config.vm.provider :aws do |aws, override|
-		aws.region = "us-east-1"
+		#aws.region = "us-west-1"
 		aws_config = YAML::load_file(File.join(Dir.home, ".aws_secrets"))
 		aws.access_key_id = aws_config.fetch("access_key_id")
 		aws.secret_access_key = aws_config.fetch("secret_access_key")

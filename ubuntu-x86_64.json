@@ -25,6 +25,26 @@
       ],
       "shutdown_command": "shutdown -P now",
       "output_directory": "/tmp/packer"
+    },
+    {
+		"type": "amazon-ebs",
+      "ami_block_device_mappings": [
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sda"
+        }
+      ],
+      "ami_name": "ubuntu-trusty-14.04-64_percona {{timestamp}}",
+      "ami_regions": [
+        "us-west-1",
+        "eu-west-1"
+      ],
+      "instance_type": "t1.micro",
+      "region": "us-east-1",
+      "source_ami": "ami-8997afe0",
+      "ssh_timeout": "5m",
+      "ssh_username": "root",
+      "ssh_password": "vagrant"
     }
   ],
   "provisioners": [
@@ -37,12 +57,25 @@
       "script": "provisioners/disable-selinux.sh"
     },
     {
+      "script": "provisioners/disable-ssh-usedns.sh",
+      "type": "shell"
+    },
+    {
       "type": "shell",
       "script": "provisioners/ec2-set-device-names.sh"
     },
     {
-      "type": "shell",
-      "script": "provisioners/prepare-vagrant-ssh-key.sh"
+      "override": {
+        "amazon-ebs": {
+          "script": "provisioners/prepare-ec2-ssh-key.sh"
+        }
+      },
+      "script": "provisioners/prepare-vagrant-ssh-key.sh",
+      "type": "shell"
+    },
+    {
+      "script": "provisioners/prepare-vagrant-user.sh",
+      "type": "shell"
     },
     {
       "type": "shell",
@@ -57,8 +90,8 @@
       "script": "provisioners/install-puppet.sh"
     },
     {
-      "type": "shell",
-      "script": "provisioners/prepare-local-percona-repo.sh"
+      "script": "provisioners/remove-extra-locales.sh",
+      "type": "shell"
     },
     {
       "type": "shell",

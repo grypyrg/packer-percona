@@ -3,7 +3,7 @@
     {
       "boot_command": [
         "<esc>",
-        "<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.cfg<enter>"
+        "<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.i386.cfg<enter>"
       ],
       "boot_wait": "5s",
       "disk_size": 40000,
@@ -28,7 +28,7 @@
       "type": "vmware-iso",  
       "boot_command": [
         "<esc>",
-        "<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.cfg<enter>"
+        "<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.i386.cfg<enter>"
       ],
       "boot_wait": "5s",
       "disk_size": 40000,
