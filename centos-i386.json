@@ -137,6 +137,15 @@
 			}
     },
     {
+      "script": "provisioners/modify-cloud-init-config.sh",
+      "type": "shell",
+      "override": {
+	      "amazon-ebs": {
+					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
+				}
+			}
+    },
+    {
       "script": "provisioners/install-guest-additions.sh",
       "type": "shell",
       "override": {
