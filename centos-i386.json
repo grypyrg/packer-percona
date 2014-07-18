@@ -1,204 +1,113 @@
 {
-  "builders": [
-    {
-      "boot_command": [
-        "<esc>",
-        "<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.i386.cfg<enter>"
-      ],
-      "boot_wait": "5s",
-      "disk_size": 40000,
-      "guest_os_type": "RedHat",
-      "headless": false,
-      "http_directory": "./http_directory",
-      "iso_checksum": "427309de36d518db9f72fc14d5d257df",
-      "iso_checksum_type": "md5",
-      "iso_urls": [
-        "http://mirror.cisp.com/CentOS/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
-        "http://mirror.ubiquityservers.com/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
-        "http://mirrors.arsc.edu/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso"
-      ],
-      "output_directory": "/tmp/packer",
-      "shutdown_command": "shutdown -P now",
-      "ssh_password": "vagrant",
-      "ssh_username": "root",
-      "type": "virtualbox-iso",
-	  "guest_additions_sha256": "c76dd5ec86f61ad72263ab6d2405723b06badfc2fae57f83ffa5de96f553400d"
-    },
-    {
-      "type": "vmware-iso",  
-      "boot_command": [
-        "<esc>",
-        "<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.i386.cfg<enter>"
-      ],
-      "boot_wait": "5s",
-      "disk_size": 40000,
-      "guest_os_type": "linux",
-      "headless": false,
-      "http_directory": "./http_directory",
-      "iso_checksum": "939fd1d87c11ffe7795324438b85adfb",
-      "iso_checksum_type": "md5",
-      "iso_urls": [
-        "http://mirror.cisp.com/CentOS/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
-        "http://mirror.ubiquityservers.com/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
-        "http://mirrors.arsc.edu/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso"
-      ],
-      "output_directory": "/tmp/packer",
-      "shutdown_command": "shutdown -P now",
-      "ssh_password": "vagrant",
-      "ssh_username": "root",
-	  "tools_upload_flavor": "linux"
-    },
-    {
-      "ami_block_device_mappings": [
-        {
-          "delete_on_termination": true,
-          "device_name": "/dev/sda"
-        }
-      ],
-      "ami_name": "centos-6_5-32_percona {{timestamp}}",
-      "ami_regions": [
-        "us-east-1",
-        "eu-west-1"
-      ],
-      "instance_type": "t1.micro",
-      "region": "us-west-1", 
-      "source_ami": "ami-a05753e5",
-      "ssh_timeout": "5m",
-      "ssh_username": "ec2-user",
-      "type": "amazon-ebs",
-			"ami_groups": [ "all" ]
-    }
-  ],
-  "post-processors": [
-    {
-      "output": "boxes/centos-6_5-32_percona_{{.Provider}}.box",
-      "override": {
-        "aws": {
-          "output": "boxes/centos-6_5-32_percona_{{.Provider}}.box"
-        }
-      },
-      "type": "vagrant"
-    }
-  ],
-  "provisioners": [
-    {
-      "script": "provisioners/no-tty-sudo.sh",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-      },
-      "type": "shell"
-    },
-    {
-      "script": "provisioners/disable-selinux.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    },
-    {
-      "script": "provisioners/disable-ssh-usedns.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    },
-    {
-      "script": "provisioners/ec2-set-device-names.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    },
-    {
-      "override": {
-        "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
-          "script": "provisioners/prepare-ec2-ssh-key.sh"
-        }
-      },
-      "script": "provisioners/prepare-vagrant-ssh-key.sh",
-      "type": "shell"
-    },
-    {
-      "script": "provisioners/prepare-vagrant-user.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    },
-    {
-      "script": "provisioners/modify-cloud-init-config.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    },
-    {
-      "script": "provisioners/install-guest-additions.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    },
-    {
-      "script": "provisioners/package-upgrades.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    },
-    {
-      "script": "provisioners/install-puppet.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    },
-    {
-      "script": "provisioners/prepare-udev.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    },
-    {
-      "script": "provisioners/remove-extra-locales.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    },
-    {
-      "script": "provisioners/clean-empty-space.sh",
-      "type": "shell",
-      "override": {
-	      "amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-    }
-  ]
+	"builders": [
+		{
+			"boot_command": [
+				"<esc>",
+				"<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.i386.cfg<enter>"
+			],
+			"boot_wait": "5s",
+			"disk_size": 40000,
+			"guest_os_type": "RedHat",
+			"headless": false,
+			"http_directory": "./http_directory",
+			"iso_checksum": "427309de36d518db9f72fc14d5d257df",
+			"iso_checksum_type": "md5",
+			"iso_urls": [
+				"http://mirror.cisp.com/CentOS/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
+				"http://mirror.ubiquityservers.com/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
+				"http://mirrors.arsc.edu/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso"
+			],
+			"output_directory": "/tmp/packer",
+			"shutdown_command": "shutdown -P now",
+			"ssh_password": "vagrant",
+			"ssh_username": "root",
+			"type": "virtualbox-iso",
+		"guest_additions_sha256": "c76dd5ec86f61ad72263ab6d2405723b06badfc2fae57f83ffa5de96f553400d"
+		},
+		{
+			"type": "vmware-iso",	 
+			"boot_command": [
+				"<esc>",
+				"<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.i386.cfg<enter>"
+			],
+			"boot_wait": "5s",
+			"disk_size": 40000,
+			"guest_os_type": "linux",
+			"headless": false,
+			"http_directory": "./http_directory",
+			"iso_checksum": "939fd1d87c11ffe7795324438b85adfb",
+			"iso_checksum_type": "md5",
+			"iso_urls": [
+				"http://mirror.cisp.com/CentOS/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
+				"http://mirror.ubiquityservers.com/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
+				"http://mirrors.arsc.edu/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso"
+			],
+			"output_directory": "/tmp/packer",
+			"shutdown_command": "shutdown -P now",
+			"ssh_password": "vagrant",
+			"ssh_username": "root",
+		"tools_upload_flavor": "linux"
+		}
+	],
+	"post-processors": [
+		{
+			"output": "boxes/centos-6_5-32_percona_{{.Provider}}.box",
+			"type": "vagrant"
+		}
+	],
+	"provisioners": [
+		{
+			"script": "provisioners/no-tty-sudo.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/disable-selinux.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/disable-ssh-usedns.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/ec2-set-device-names.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/prepare-vagrant-ssh-key.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/prepare-vagrant-user.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/modify-cloud-init-config.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/install-guest-additions.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/package-upgrades.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/install-puppet.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/prepare-udev.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/remove-extra-locales.sh",
+			"type": "shell"
+		},
+		{
+			"script": "provisioners/clean-empty-space.sh",
+			"type": "shell"
+	}
+	]
 }
 
