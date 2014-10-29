@@ -10,19 +10,19 @@
 			"guest_os_type": "RedHat_64",
 			"headless": true,
 			"http_directory": "./http_directory",
-			"iso_checksum": "939fd1d87c11ffe7795324438b85adfb",
+			"iso_checksum": "96de4f38a2f07da51831153549c8bd0c",
 			"iso_checksum_type": "md5",
 			"iso_urls": [
-				"http://mirror.cisp.com/CentOS/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso",
-				"http://mirror.ubiquityservers.com/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso",
-				"http://mirrors.arsc.edu/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso"
+				"http://mirrors.cmich.edu/centos/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-NetInstall.iso",
+				"http://mirror.itc.virginia.edu/CentOS/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-NetInstall.iso",
+				"http://mirror.es.its.nyu.edu/centos/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-NetInstall.iso"
 			],
 			"output_directory": "/tmp/packer",
 			"shutdown_command": "shutdown -P now",
 			"ssh_password": "vagrant",
 			"ssh_username": "root",
 			"type": "virtualbox-iso",
-		"guest_additions_sha256": "c76dd5ec86f61ad72263ab6d2405723b06badfc2fae57f83ffa5de96f553400d"
+			"guest_additions_sha256": "2a87971ae3c7e57e87713967a6f242acbdafcc09b635cba98e6dd3a7f5292d3b"
 		},
 		{
 			"type": "vmware-iso",	 
@@ -35,12 +35,12 @@
 			"guest_os_type": "linux",
 			"headless": false,
 			"http_directory": "./http_directory",
-			"iso_checksum": "939fd1d87c11ffe7795324438b85adfb",
+			"iso_checksum": "96de4f38a2f07da51831153549c8bd0c",
 			"iso_checksum_type": "md5",
 			"iso_urls": [
-				"http://mirror.cisp.com/CentOS/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso",
-				"http://mirror.ubiquityservers.com/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso",
-				"http://mirrors.arsc.edu/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-netinstall.iso"
+				"http://mirrors.cmich.edu/centos/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-NetInstall.iso",
+				"http://mirror.itc.virginia.edu/CentOS/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-NetInstall.iso",
+				"http://mirror.es.its.nyu.edu/centos/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-NetInstall.iso"
 			],
 			"output_directory": "/tmp/packer",
 			"shutdown_command": "shutdown -P now",
@@ -55,7 +55,7 @@
 					"device_name": "/dev/sda"
 				}
 			],
-			"ami_name": "centos-6_5-64_percona {{timestamp}}",
+			"ami_name": "centos-7_0-64_percona {{timestamp}}",
 			"ami_regions": [
 				"us-east-1",
 				"eu-west-1"
@@ -71,10 +71,10 @@
 	],
 	"post-processors": [
 		{
-			"output": "boxes/centos-6_5-64_percona_{{.Provider}}.box",
+			"output": "boxes/centos-7_0-64_percona_{{.Provider}}.box",
 			"override": {
 				"aws": {
-					"output": "boxes/centos-6_5-64_percona_{{.Provider}}.box"
+					"output": "boxes/centos-7_0-64_percona_{{.Provider}}.box"
 				}
 			},
 			"type": "vagrant"
