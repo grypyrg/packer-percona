@@ -57,12 +57,12 @@
 			],
 			"ami_name": "centos-7_0-64_percona {{timestamp}}",
 			"ami_regions": [
-				"us-east-1",
+				"us-west-1",
 				"eu-west-1"
 			],
 			"instance_type": "t1.micro",
-			"region": "us-west-1", 
-			"source_ami": "ami-a05753e5",
+			"region": "us-east-1", 
+			"source_ami": "ami-b2c505da",
 			"ssh_timeout": "5m",
 			"ssh_username": "ec2-user",
 			"type": "amazon-ebs",
@@ -82,6 +82,15 @@
 	],
 	"provisioners": [
 		{
+			"script": "provisioners/install-useful-packages.sh",
+			"type": "shell",
+			"override": {
+				"amazon-ebs": {
+					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
+				}
+			}
+		},
+		{
 			"script": "provisioners/no-tty-sudo.sh",
 			"override": {
 				"amazon-ebs": {
@@ -91,7 +100,7 @@
 			"type": "shell"
 		},
 		{
-			"script": "provisioners/disable-selinux.sh",
+			"script": "provisioners/disable-security.sh",
 			"type": "shell",
 			"override": {
 				"amazon-ebs": {
@@ -156,15 +165,6 @@
 		},
 		{
 			"script": "provisioners/package-upgrades.sh",
-			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-		},
-		{
-			"script": "provisioners/install-puppet.sh",
 			"type": "shell",
 			"override": {
 				"amazon-ebs": {

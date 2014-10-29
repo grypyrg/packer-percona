@@ -59,7 +59,8 @@ def provider_aws( name, config, instance_type, region = nil, security_groups = n
 end
 
 Vagrant.configure("2") do |config|
-	config.vm.box = "centos-6_5-64_percona"
+	#config.vm.box = "centos-6_5-64_percona"
+	config.vm.box = "centos7"
 	#config.vm.box = "perconajayj/centos-x86_64"
 	config.ssh.username = "vagrant"
 	config.vm.network "private_network", ip: "192.168.50.4"
