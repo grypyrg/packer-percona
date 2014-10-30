@@ -82,6 +82,15 @@
 	],
 	"provisioners": [
 		{
+			"script": "provisioners/package-upgrades.sh",
+			"type": "shell",
+			"override": {
+				"amazon-ebs": {
+					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
+				}
+			}
+		},
+		{
 			"script": "provisioners/install-useful-packages.sh",
 			"type": "shell",
 			"override": {
@@ -156,15 +165,6 @@
 		},
 		{
 			"script": "provisioners/install-guest-additions.sh",
-			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-		},
-		{
-			"script": "provisioners/package-upgrades.sh",
 			"type": "shell",
 			"override": {
 				"amazon-ebs": {
