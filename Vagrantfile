@@ -60,22 +60,22 @@ end
 
 Vagrant.configure("2") do |config|
 	#config.vm.box = "centos-6_5-64_percona"
-	config.vm.box = "centos7"
+	config.vm.box = "centos-7_0-64_percona"
 	#config.vm.box = "perconajayj/centos-x86_64"
-	config.ssh.username = "vagrant"
-	config.vm.network "private_network", ip: "192.168.50.4"
+	config.ssh.username = "root"
+  # config.vm.network "private_network", ip: "192.168.70.4"
 
-	provider_aws( 'Packer test server', config, 'm1.small', 'us-west-1' ) do | aws, override |
+	provider_aws( 'Packer test server', config, 'm1.small', 'us-east-1' ) do | aws, override |
 		# Block device mapping will work when vagrant-aws 0.3 is released.
 		# Until then, this config will not work and must be done at the box level in Packer
-		aws.block_device_mapping = [
-			{
-		        'DeviceName' => "/dev/sdl",
-		        'VirtualName' => "mysql_data",
-		        'Ebs.VolumeSize' => 20,
-		        'Ebs.DeleteOnTermination' => true
-			}
-		]
+    aws.block_device_mapping = [
+      {
+            'DeviceName' => "/dev/sdl",
+            'VirtualName' => "mysql_data",
+            'Ebs.VolumeSize' => 20,
+            'Ebs.DeleteOnTermination' => true
+      }
+    ]
 	end
 
 	# Add provisioner info here
