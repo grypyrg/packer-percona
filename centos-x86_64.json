@@ -1,6 +1,7 @@
 {
 	"builders": [
 		{
+			"type": "virtualbox-iso",
 			"boot_command": [
 				"<esc>",
 				"<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.cfg<enter>"
@@ -21,7 +22,6 @@
 			"shutdown_command": "shutdown -P now",
 			"ssh_password": "vagrant",
 			"ssh_username": "root",
-			"type": "virtualbox-iso",
 			"guest_additions_sha256": "2a87971ae3c7e57e87713967a6f242acbdafcc09b635cba98e6dd3a7f5292d3b"
 		},
 		{
@@ -49,6 +49,7 @@
 		"tools_upload_flavor": "linux"
 		},
 		{
+			"type": "amazon-ebs",
 			"ami_block_device_mappings": [
 				{
 					"delete_on_termination": true,
@@ -65,7 +66,6 @@
 			"source_ami": "ami-b2c505da",
 			"ssh_timeout": "5m",
 			"ssh_username": "ec2-user",
-			"type": "amazon-ebs",
 			"ami_groups": [ "all" ]
 		}
 	],
