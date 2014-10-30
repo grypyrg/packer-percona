@@ -33,7 +33,7 @@
 			"boot_wait": "5s",
 			"disk_size": 40000,
 			"guest_os_type": "linux",
-			"headless": false,
+			"headless": true,
 			"http_directory": "./http_directory",
 			"iso_checksum": "96de4f38a2f07da51831153549c8bd0c",
 			"iso_checksum_type": "md5",
