@@ -63,7 +63,7 @@ Vagrant.configure("2") do |config|
 	config.vm.box = "centos-7_0-64_percona"
 	#config.vm.box = "perconajayj/centos-x86_64"
 	config.ssh.username = "root"
-  # config.vm.network "private_network", ip: "192.168.70.4"
+    config.vm.network "private_network", type: "dhcp"
 
 	provider_aws( 'Packer test server', config, 'm1.small', 'us-east-1' ) do | aws, override |
 		# Block device mapping will work when vagrant-aws 0.3 is released.
