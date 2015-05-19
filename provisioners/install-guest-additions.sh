@@ -20,7 +20,7 @@ then
 	echo "Installing VMware Tools"	
 
     # Make sure perl is available
-    yum -y install perl
+    yum -y install perl fuse fuse-libs
 
     # Mount the disk image
     cd /tmp

@@ -4,7 +4,7 @@
 require 'yaml'
 
 
-def provider_aws( name, config, instance_type, region = nil, security_groups = nil, hostmanager_aws_ips = nil )
+def provider_aws( name, config, instance_type, region = nil, security_groups = nil, hostmanager_aws_ips = nil, subnet_id = nil )
     require 'yaml'
 
     aws_secrets_file = File.join( Dir.home, '.aws_secrets' )
@@ -20,6 +20,11 @@ def provider_aws( name, config, instance_type, region = nil, security_groups = n
             aws.tags = {
                 'Name' => aws_config.fetch("instance_name_prefix") + " " + name
             }
+
+            if subnet_id != nil
+                aws.subnet_id = subnet_id
+                aws.associate_public_ip = true
+            end
 
             if region == nil
                 aws.keypair_name = aws_config["keypair_name"]
@@ -60,12 +65,12 @@ end
 
 Vagrant.configure("2") do |config|
 	#config.vm.box = "centos-6_5-64_percona"
-	config.vm.box = "centos-7_0-64_percona"
+	config.vm.box = "centos-7-64_percona"
 	#config.vm.box = "perconajayj/centos-x86_64"
 	config.ssh.username = "root"
     config.vm.network "private_network", type: "dhcp"
 
-	provider_aws( 'Packer test server', config, 'm1.small', 'us-east-1' ) do | aws, override |
+	provider_aws( 'Packer test server', config, 't2.small', 'us-east-1', nil, nil, 'subnet-896602d0' ) do | aws, override |
 		# Block device mapping will work when vagrant-aws 0.3 is released.
 		# Until then, this config will not work and must be done at the box level in Packer
     aws.block_device_mapping = [
