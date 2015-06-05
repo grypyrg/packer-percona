@@ -51,11 +51,15 @@
 		{
 			"type": "amazon-ebs",
 			"ami_name": "centos-7_0-64_percona {{timestamp}}",
+			"ami_regions": [
+				"us-west-1",
+				"eu-west-1"
+			],
 			"instance_type": "t2.micro",
 			"region": "us-east-1", 
 			"source_ami": "ami-1609da7e",
-			"subnet_id": "subnet-ad6c5e97",
-			"vpc_id": "vpc-0ec6f06b",
+			"subnet_id": "subnet-896602d0",
+			"vpc_id": "vpc-cacef8af",
 			"associate_public_ip_address": "true",
 			"ami_virtualization_type": "hvm",
 			"ssh_timeout": "5m",
