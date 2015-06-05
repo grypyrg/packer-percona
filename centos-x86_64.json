@@ -76,122 +76,27 @@
 	],
 	"provisioners": [
 		{
-			"script": "provisioners/package-upgrades.sh",
+			"script": "provisioners/base.sh",
 			"type": "shell",
 			"override": {
 				"amazon-ebs": {
+					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
+				},
+				"openstack": {
 					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
 				}
 			}
 		},
 		{
-			"script": "provisioners/install-useful-packages.sh",
+			"script": "provisioners/vm.sh",
 			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
+			"only": ["virtualbox-iso", "vmware-iso"]
 		},
 		{
-			"script": "provisioners/no-tty-sudo.sh",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			},
-			"type": "shell"
-		},
-		{
-			"script": "provisioners/disable-security.sh",
+			"script": "provisioners/cloud.sh",
 			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-		},
-		{
-			"script": "provisioners/disable-ssh-usedns.sh",
-			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-		},
-		{
-			"script": "provisioners/ec2-set-device-names.sh",
-			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-		},
-		{
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
-					"script": "provisioners/prepare-ec2-ssh-key.sh"
-				}
-			},
-			"script": "provisioners/prepare-vagrant-ssh-key.sh",
-			"type": "shell"
-		},
-		{
-			"script": "provisioners/prepare-vagrant-user.sh",
-			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-		},
-		{
-			"script": "provisioners/modify-cloud-init-config.sh",
-			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-		},
-		{
-			"script": "provisioners/install-guest-additions.sh",
-			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-		},
-		{
-			"script": "provisioners/prepare-udev.sh",
-			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-		},
-		{
-			"script": "provisioners/remove-extra-locales.sh",
-			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
-		},
-		{
-			"script": "provisioners/clean-empty-space.sh",
-			"type": "shell",
-			"override": {
-				"amazon-ebs": {
-					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-				}
-			}
+			"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+			"only": ["openstack", "amazon-ebs"]
 		}
 	]
 }
