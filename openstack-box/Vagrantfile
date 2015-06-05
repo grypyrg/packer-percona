@@ -1,0 +1,12 @@
+
+# The contents below were provided by the Packer Vagrant post-processor
+
+Vagrant.configure("2") do |config|
+  config.vm.provider "openstack" do |openstack|    
+	openstack.image = "perconajayj-centos-64-7.1.20150605"
+  end
+end
+
+# The contents below (if any) are custom contents provided by the
+# Packer template during image build.
+

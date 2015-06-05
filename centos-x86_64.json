@@ -65,6 +65,16 @@
 			"ssh_timeout": "5m",
 			"ssh_username": "centos",
 			"ami_groups": [ "all" ]
+		},
+		{
+			"type": "openstack",
+			"ssh_username": "centos",
+			"image_name": "centos-7-64_percona_build",
+			"source_image": "e91deccd-d5df-42f7-8572-7a3cbb4932c2",
+			"flavor": "d5e37f62-b799-4175-a21c-0e447b6ad40b",
+			"networks": ["50285812-3a34-40c5-9e69-0f67fab0ae5c"],
+			"use_floating_ip": true,
+			"floating_ip": "10.60.23.208"
 		}
 	],
 	"post-processors": [
@@ -75,7 +85,8 @@
 					"output": "boxes/centos-7-64_percona_{{.Provider}}.box"
 				}
 			},
-			"type": "vagrant"
+			"type": "vagrant",
+			"except": ["openstack"]
 		}
 	],
 	"provisioners": [
