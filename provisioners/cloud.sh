@@ -15,6 +15,7 @@ if [ -f /etc/cloud/cloud.cfg ]; then
 	sed -i "s/^disable_root: 1$/disable_root: 0/" /etc/cloud/cloud.cfg
 	sed -i "s/^ssh_pwauth:   0$/ssh_pwauth:   1/" /etc/cloud/cloud.cfg
 	sed -i "s/^    name: centos$/    name: vagrant/" /etc/cloud/cloud.cfg
+	sed -i "/^ - mounts"/d /etc/cloud/cloud.cfg
 fi
 
 
