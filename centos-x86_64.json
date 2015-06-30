@@ -50,7 +50,7 @@
 		},
 		{
 			"type": "amazon-ebs",
-			"ami_name": "centos-7_0-64_percona {{timestamp}}",
+			"ami_name": "centos-7-64_percona {{timestamp}}",
 			"ami_regions": [
 				"us-west-1",
 				"eu-west-1"
