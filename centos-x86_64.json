@@ -65,7 +65,13 @@
 			"ssh_timeout": "5m",
 			"ssh_pty": "true",
 			"ssh_username": "centos",
-			"ami_groups": [ "all" ]
+			"ami_groups": [ "all" ],
+			"ami_block_device_mappings": [
+				{
+					"device_name": "/dev/sda1",
+					"delete_on_termination": true
+				}
+			]
 		},
 		{
 			"type": "openstack",
