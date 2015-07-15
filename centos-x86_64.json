@@ -63,6 +63,7 @@
 			"associate_public_ip_address": "true",
 			"ami_virtualization_type": "hvm",
 			"ssh_timeout": "5m",
+			"ssh_pty": "true",
 			"ssh_username": "centos",
 			"ami_groups": [ "all" ]
 		},
