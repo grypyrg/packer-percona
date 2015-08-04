@@ -117,10 +117,11 @@ Vagrant.configure("2") do |config|
 	config.ssh.username = "root"
     config.vm.network "private_network", type: "dhcp"
 
-	provider_aws( 'Packer test server', config, 't2.small', 'us-east-1', nil, nil, 'subnet-896602d0' ) do | aws, override |
+	provider_aws( 'Packer test server', config, 'm3.large', 'us-east-1', nil, nil, 'subnet-896602d0' ) do | aws, override |
 		# Block device mapping will work when vagrant-aws 0.3 is released.
 		# Until then, this config will not work and must be done at the box level in Packer
     aws.block_device_mapping = [
+		{ 'DeviceName' => "/dev/sdb", 'VirtualName' => "ephemeral0" },
       {
             'DeviceName' => "/dev/sdl",
             'VirtualName' => "mysql_data",
