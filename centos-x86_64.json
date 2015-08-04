@@ -22,6 +22,7 @@
 			"shutdown_command": "shutdown -P now",
 			"ssh_password": "vagrant",
 			"ssh_username": "root",
+			"ssh_timeout": "20m",
 			"guest_additions_sha256": "2a87971ae3c7e57e87713967a6f242acbdafcc09b635cba98e6dd3a7f5292d3b"
 		},
 		{
@@ -46,6 +47,7 @@
 			"shutdown_command": "shutdown -P now",
 			"ssh_password": "vagrant",
 			"ssh_username": "root",
+			"ssh_timeout": "20m",
 			"tools_upload_flavor": "linux"
 		},
 		{
@@ -84,18 +86,6 @@
 			"floating_ip": "10.60.23.208"
 		}
 	],
-	"post-processors": [
-		{
-			"output": "boxes/centos-7-64_percona_{{.Provider}}.box",
-			"override": {
-				"aws": {
-					"output": "boxes/centos-7-64_percona_{{.Provider}}.box"
-				}
-			},
-			"type": "vagrant",
-			"except": ["openstack"]
-		}
-	],
 	"provisioners": [
 		{
 			"script": "provisioners/base.sh",
@@ -120,6 +110,52 @@
 			"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
 			"only": ["openstack", "amazon-ebs"]
 		}
-	]
+	],
+	"post-processors": [[
+		{
+			"type": "vagrant",
+			"output": "boxes/centos-7-64_percona_{{.Provider}}.box"
+		},
+		{
+			"type": "atlas",
+			"artifact": "perconajayj/centos-x86_64",
+			"artifact_type": "vagrant.box",
+			"only": ["virtualbox-iso"],
+			"metadata": {
+				"provider": "virtualbox",
+				"version": "7.1.{{isotime \"20060102\"}}"
+			}
+		},
+		{
+			"type": "atlas",
+			"artifact": "perconajayj/centos-x86_64",
+			"artifact_type": "vagrant.box",
+			"only": ["vmware-iso"],
+			"metadata": {
+				"provider": "vmware_desktop",
+				"version": "7.1.{{isotime \"20060102\"}}"
+			}
+		},
+		{
+			"type": "atlas",
+			"artifact": "perconajayj/centos-x86_64",
+			"artifact_type": "vagrant.box",
+			"only": ["amazon-ebs"],
+			"metadata": {
+				"provider": "aws",
+				"version": "7.1.{{isotime \"20060102\"}}"
+			}
+		},
+		{
+			"type": "atlas",
+			"artifact": "perconajayj/centos-x86_64",
+			"artifact_type": "vagrant.box",
+			"only": ["openstack"],
+			"metadata": {
+				"provider": "openstack",
+				"version": "7.1.{{isotime \"20060102\"}}"
+			}
+		}
+	]]
 }
 
