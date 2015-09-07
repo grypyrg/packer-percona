@@ -1,5 +1,10 @@
 #!/bin/bash		
 
+
+
+centosversion=`rpm -qi centos-release  | grep Version | awk '{ print $3}'`
+
+
 #----------------------------------------------
 echo 'Starting Package Upgrades'
 
@@ -18,11 +23,11 @@ fi
 #----------------------------------------------
 echo "Installing useful packages"
 if [ -x /usr/bin/yum ]; then
-	yum localinstall -y http://mirror.sfo12.us.leaseweb.net/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
-	yum install -y puppet screen telnet unzip lsof ntp ntpdate wget sysstat bind-utils htop biosdevname
+	yum localinstall -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$centosversion.noarch.rpm
+	yum install -y puppet screen telnet unzip lsof ntp ntpdate wget sysstat bind-utils htop biosdevname sudo
 
 elif [ -x /usr/bin/apt-get ]; then
-	apt-get install puppet screen telnet unzip lsof ntp ntpdate wget sysstat bind-utils -y
+	apt-get install puppet screen telnet unzip lsof ntp ntpdate wget sysstat bind-utils sudo -y
 else
 	echo -n "Unhandled OS: "
 	cat /etc/issue
