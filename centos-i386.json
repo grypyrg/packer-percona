@@ -1,6 +1,7 @@
 {
 	"builders": [
 		{
+			"type": "virtualbox-iso",
 			"boot_command": [
 				"<esc>",
 				"<wait>linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.i386.cfg<enter>"
@@ -10,19 +11,19 @@
 			"guest_os_type": "RedHat",
 			"headless": true,
 			"http_directory": "./http_directory",
-			"iso_checksum": "427309de36d518db9f72fc14d5d257df",
+			"iso_checksum": "ec1f887d9097ac704bb8d5624cda13af",
 			"iso_checksum_type": "md5",
 			"iso_urls": [
-				"http://mirror.cisp.com/CentOS/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
-				"http://mirror.ubiquityservers.com/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
-				"http://mirrors.arsc.edu/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso"
+				"http://centos.mirror.nucleus.be/6.7/isos/i386/CentOS-6.7-i386-netinstall.iso",
+				"http://mirror.ubiquityservers.com/centos/6.7/isos/i386/CentOS-6.7-i386-netinstall.iso",
+				"http://mirrors.arsc.edu/centos/6.7/isos/i386/CentOS-6.7-i386-netinstall.iso"
 			],
-			"output_directory": "/tmp/packer",
+			"output_directory": "/tmp/packer-virtualbox",
 			"shutdown_command": "shutdown -P now",
 			"ssh_password": "vagrant",
 			"ssh_username": "root",
-			"type": "virtualbox-iso",
-		"guest_additions_sha256": "c76dd5ec86f61ad72263ab6d2405723b06badfc2fae57f83ffa5de96f553400d"
+			"ssh_timeout": "20m",
+			"guest_additions_sha256": "c76dd5ec86f61ad72263ab6d2405723b06badfc2fae57f83ffa5de96f553400d"
 		},
 		{
 			"type": "vmware-iso",	 
@@ -35,79 +36,107 @@
 			"guest_os_type": "linux",
 			"headless": true,
 			"http_directory": "./http_directory",
-			"iso_checksum": "427309de36d518db9f72fc14d5d257df",
+			"iso_checksum": "ec1f887d9097ac704bb8d5624cda13af",
 			"iso_checksum_type": "md5",
 			"iso_urls": [
-				"http://mirror.cisp.com/CentOS/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
-				"http://mirror.ubiquityservers.com/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso",
-				"http://mirrors.arsc.edu/centos/6.5/isos/i386/CentOS-6.5-i386-netinstall.iso"
+				"http://centos.mirror.nucleus.be/6.7/isos/i386/CentOS-6.7-i386-netinstall.iso",
+				"http://mirror.ubiquityservers.com/centos/6.7/isos/i386/CentOS-6.7-i386-netinstall.iso",
+				"http://mirrors.arsc.edu/centos/6.7/isos/i386/CentOS-6.7-i386-netinstall.iso"
 			],
 			"output_directory": "/tmp/packer",
 			"shutdown_command": "shutdown -P now",
 			"ssh_password": "vagrant",
 			"ssh_username": "root",
-		"tools_upload_flavor": "linux"
-		}
-	],
-	"post-processors": [
+			"ssh_timeout": "20m",
+			"tools_upload_flavor": "linux"
+		},
 		{
-			"output": "boxes/centos-6_5-32_percona_{{.Provider}}.box",
-			"type": "vagrant"
+			"type": "amazon-ebs",
+			"ami_name": "centos-6_7-32_percona {{timestamp}}",
+			"ami_regions": [
+				"us-west-1",
+				"eu-west-1"
+			],
+			"instance_type": "t1.micro",
+			"region": "us-east-1", 
+			"source_ami": "ami-e786ea82",
+			"security_group_id": "sg-29d99144",
+			"associate_public_ip_address": "true",
+			"ssh_timeout": "10m",
+			"ssh_pty": "true",
+			"ssh_username": "root",
+			"ami_groups": [ "all" ],
+			"ami_block_device_mappings": [
+				{
+					"device_name": "/dev/sda1",
+					"delete_on_termination": true
+				}
+			]
 		}
 	],
 	"provisioners": [
 		{
-			"script": "provisioners/no-tty-sudo.sh",
-			"type": "shell"
+			"script": "provisioners/base.sh",
+			"type": "shell",
+			"override": {
+				"amazon-ebs": {
+					"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}"
+				}
+			}
 		},
 		{
-			"script": "provisioners/disable-selinux.sh",
-			"type": "shell"
+			"script": "provisioners/vm.sh",
+			"type": "shell",
+			"only": ["virtualbox-iso", "vmware-iso"]
 		},
 		{
-			"script": "provisioners/disable-ssh-usedns.sh",
-			"type": "shell"
+			"script": "provisioners/amazon-ebs-32bit.sh",
+			"type": "shell",
+			"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
+			"only": ["amazon-ebs"]
 		},
 		{
-			"script": "provisioners/ec2-set-device-names.sh",
-			"type": "shell"
+			"script": "provisioners/cloud.sh",
+			"type": "shell",
+			"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
+			"only": ["amazon-ebs"]
+		}
+	],
+	"post-processors": [[
+		{
+			"type": "vagrant",
+			"output": "boxes/centos-6_7-32_percona_{{.Provider}}.box"
 		},
 		{
-			"script": "provisioners/prepare-vagrant-ssh-key.sh",
-			"type": "shell"
+			"type": "atlas",
+			"artifact": "grypyrg/centos-i386",
+			"artifact_type": "vagrant.box",
+			"only": ["virtualbox-iso"],
+			"metadata": {
+				"provider": "virtualbox",
+				"version": "6.7.{{isotime \"20060102\"}}"
+			}
 		},
 		{
-			"script": "provisioners/prepare-vagrant-user.sh",
-			"type": "shell"
+			"type": "atlas",
+			"artifact": "grypyrg/centos-i386",
+			"artifact_type": "vagrant.box",
+			"only": ["vmware-iso"],
+			"metadata": {
+				"provider": "vmware_desktop",
+				"version": "6.7.{{isotime \"20060102\"}}"
+			}
 		},
 		{
-			"script": "provisioners/modify-cloud-init-config.sh",
-			"type": "shell"
-		},
-		{
-			"script": "provisioners/install-guest-additions.sh",
-			"type": "shell"
-		},
-		{
-			"script": "provisioners/package-upgrades.sh",
-			"type": "shell"
-		},
-		{
-			"script": "provisioners/install-puppet.sh",
-			"type": "shell"
-		},
-		{
-			"script": "provisioners/prepare-udev.sh",
-			"type": "shell"
-		},
-		{
-			"script": "provisioners/remove-extra-locales.sh",
-			"type": "shell"
-		},
-		{
-			"script": "provisioners/clean-empty-space.sh",
-			"type": "shell"
-	}
-	]
+			"type": "atlas",
+			"artifact": "grypyrg/centos-i386",
+			"artifact_type": "vagrant.box",
+			"only": ["amazon-ebs"],
+			"metadata": {
+				"provider": "aws",
+				"version": "6.7.{{isotime \"20060102\"}}"
+			}
+		}
+	]]
 }
 
