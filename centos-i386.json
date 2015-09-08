@@ -68,7 +68,7 @@
 			"ami_groups": [ "all" ],
 			"ami_block_device_mappings": [
 				{
-					"device_name": "/dev/xvde",
+					"device_name": "/dev/sda1",
 					"delete_on_termination": true
 				}
 			]
