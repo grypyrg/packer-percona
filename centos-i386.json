@@ -90,12 +90,6 @@
 			"only": ["virtualbox-iso", "vmware-iso"]
 		},
 		{
-			"script": "provisioners/amazon-ebs-32bit.sh",
-			"type": "shell",
-			"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
-			"only": ["amazon-ebs"]
-		},
-		{
 			"script": "provisioners/cloud.sh",
 			"type": "shell",
 			"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
@@ -137,6 +131,6 @@
 				"version": "6.7.{{isotime \"20060102\"}}"
 			}
 		}
-	]]
+	]],
 }
 
