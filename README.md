@@ -4,6 +4,13 @@ The goal of these packer builds is to create consistent Vagrant boxes across mul
 
 These setups are typically for the purposes of internal testing and demonstration purposes and don't necessarily reflect recommended production settings.  
 
+## Atlas
+
+You can find the builds of these packer images on Atlas:
+
+- https://atlas.hashicorp.com/grypyrg/boxes/centos-x86_64
+- https://atlas.hashicorp.com/grypyrg/boxes/centos-i386
+
 ## Setup
 
 Required Software:
