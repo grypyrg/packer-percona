@@ -50,6 +50,11 @@ fi
 # remove root authorized keys after finish
 rm -f /root/.ssh/authorized_keys
 
+#----------------------------------------------
+echo "Removing any network-scripts/ifcfg-e*"
+rm -f /etc/sysconfig/network-scripts/ifcfg-e*
+
+
 
 sync && sleep 1 && sync
 
