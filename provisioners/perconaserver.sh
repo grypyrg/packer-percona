@@ -11,7 +11,7 @@ yum install cloud-init
 
 echo "Installing Percona Server"
 yum -y install http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm
-yum -y install Percona-Server-server-57 Percona-Server-client-57 percona-xtrabackup percona-toolki
+yum -y install Percona-Server-server-57 Percona-Server-client-57 percona-xtrabackup percona-toolkit
 
 
 echo "Don't require tty for sudoers"
