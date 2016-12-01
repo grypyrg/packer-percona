@@ -1,0 +1,46 @@
+{
+	"builders": [
+		{
+			"type": "amazon-ebs",
+			"ami_name": "percona-pmm 1.0.6",
+			"instance_type": "m3.medium",
+			"region": "us-east-1", 
+			"source_ami": "ami-1609da7e",
+			"subnet_id": "subnet-896602d0",
+			"vpc_id": "vpc-cacef8af",
+			"associate_public_ip_address": "true",
+			"ami_virtualization_type": "hvm",
+			"ssh_timeout": "5m",
+			"ssh_pty": "true",
+			"ssh_username": "centos",
+			"ami_groups": [ "all" ],
+			"ami_block_device_mappings": [
+				{
+					"device_name": "/dev/sda1",
+					"delete_on_termination": true
+				}
+			]
+		}
+	],
+	"provisioners": [
+		{
+			"script": "provisioners/pmm.sh",
+			"type": "shell",
+			"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+			"only": ["amazon-ebs"]
+		}
+	],
+	"post-processors": [[
+		{
+			"type": "atlas",
+			"artifact": "grypyrg/percona-pmm",
+			"artifact_type": "amazon.image",
+			"only": ["amazon-ebs"],
+			"metadata": {
+				"provider": "aws",
+				"version": "1.0.6"
+			}
+		}
+	]]
+}
+
