@@ -11,18 +11,18 @@
 			"guest_os_type": "RedHat_64",
 			"headless": true,
 			"http_directory": "./http_directory",
-			"iso_checksum": "99d305fa40ec9e28ef8450c3bcc45f85",
-			"iso_checksum_type": "md5",
+			"iso_checksum": "f2f7367deb90a25822947660c71638333ca0eceeabecc2d631be6cd508c24494",
+			"iso_checksum_type": "sha256",
 			"iso_urls": [
-				"http://mirrors.xmission.com/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso",
-				"http://repos.mia.quadranet.com/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso",
-				"http://mirror.clarkson.edu/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso"
+				"http://mirrors.xmission.com/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso",
+				"http://repos.mia.quadranet.com/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso",
+				"http://mirror.clarkson.edu/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso"
 			],
 			"output_directory": "/tmp/packer-virtualbox-x86_64",
 			"shutdown_command": "shutdown -P now",
 			"ssh_password": "vagrant",
 			"ssh_username": "root",
-			"ssh_timeout": "20m",
+			"ssh_timeout": "30m",
 			"guest_additions_sha256": "2a87971ae3c7e57e87713967a6f242acbdafcc09b635cba98e6dd3a7f5292d3b"
 		},
 		{
@@ -36,12 +36,12 @@
 			"guest_os_type": "linux",
 			"headless": true,
 			"http_directory": "./http_directory",
-			"iso_checksum": "99d305fa40ec9e28ef8450c3bcc45f85",
-			"iso_checksum_type": "md5",
+			"iso_checksum": "f2f7367deb90a25822947660c71638333ca0eceeabecc2d631be6cd508c24494",
+			"iso_checksum_type": "sha256",
 			"iso_urls": [
-				"http://mirrors.xmission.com/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso",
-				"http://repos.mia.quadranet.com/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso",
-				"http://mirror.clarkson.edu/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso"
+				"http://mirrors.xmission.com/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso",
+				"http://repos.mia.quadranet.com/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso",
+				"http://mirror.clarkson.edu/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso"
 			],
 			"output_directory": "/tmp/packer-vmware",
 			"shutdown_command": "shutdown -P now",
